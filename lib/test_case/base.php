@@ -132,6 +132,15 @@ abstract class Base {
   function run($recorder) {
     $this->recorder = $recorder;
     $this->prepare_error_handler();
+    $test_methods = array();
+    
+    if(property_exists($this, 'isolate')) {
+      foreach($this->isolate as $tn) {
+        $test_methods[] = "test_$tn";
+      }
+    } else {
+      $test_methods = $this->collect_test_methods();
+    }
     
     try {
       # try set-up method
@@ -150,8 +159,8 @@ abstract class Base {
     }
     
     if(method_exists($this, 'boot')) $this->boot();
-
-    foreach($this->collect_test_methods() as $method) {  
+    
+    foreach($test_methods as $method) {  
       $recorder->record_test();
       $this->process_test($method);      
       $recorder->complete_test();
@@ -274,7 +283,7 @@ abstract class Base {
    * @param mixed $value
    * @param string $message
    */
-  protected function assert_includes(array $stack, $value, $message = 'Array does not include the given value') {
+  protected function assert_includes($value, array $stack, $message = 'Array does not include the given value') {
     $this->assert(in_array($value, $stack), $message);
   }
   
@@ -329,8 +338,30 @@ abstract class Base {
    * @param mixed $value
    * @param string $message
    */  
-  protected function assert_empty($value, $message = 'Emptyness expected') {
+  protected function assert_empty($value, $message = 'Empty value expected') {
     $this->assert(empty($value), $message);
+  }
+  
+  /**
+   * Assert empty-array
+   *
+   * @access protected
+   * @param mixed $value
+   * @param string $message
+   */  
+  protected function assert_empty_array($value, $message = 'Empty array value expected') {
+    $this->assert(is_array($value) and empty($value), $message);
+  }
+  
+  /**
+   * Assert empty-string
+   *
+   * @access protected
+   * @param mixed $value
+   * @param string $message
+   */  
+  protected function assert_empty_string($value, $message = 'Empty string value expected') {
+    $this->assert(is_string($value) and empty($value), $message);
   }
   
   /**
@@ -340,8 +371,19 @@ abstract class Base {
    * @param mixed $value
    * @param string $message
    */  
-  protected function assert_not_empty($value, $message = 'No emptyness expected') {
+  protected function assert_present($value, $message = 'Present value expected') {
     $this->assert(!empty($value), $message);
+  }
+  
+  /**
+   * Assert callable
+   *
+   * @access protected
+   * @param mixed $value
+   * @param string $message
+   */
+  protected function assert_callable($value, $message = 'Callable expected') {
+    $this->assert(is_callable($value), $message);
   }
   
   /**
@@ -432,6 +474,25 @@ abstract class Base {
    */
   protected function assert_equality($equal, $to, $message = 'Equality expected') {
     $this->assert(($equal === $to), $message);
+  }
+  
+  # aliases for assert_equality()
+  protected function assert_equal($equal, $to, $message = 'Equality expected') {
+    return $this->assert_equality($equal, $to, $message);
+  }
+  
+  protected function assert_eq($equal, $to, $message = 'Equality expected') {
+    return $this->assert_equality($equal, $to, $message);
+  }
+  
+  protected function assert_thrown_exception($object_or_class, $method, array $arguments = array(), $message = 'Exception expected') {
+    try {
+      call_user_func_array(array($object_or_class, $method), $arguments);
+    } catch(\Exception $e) {
+      return $this->pass_assertion('Exception thrown');
+    }
+    
+    $this->fail_assertion($message);
   }
 }
 ?>

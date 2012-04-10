@@ -17,7 +17,7 @@ namespace {
     require_once __DIR__."/test_bench/$name.php";
   }
   
-  foreach(array('base', 'recorder') as $name) {
+  foreach(array('base', 'recorder', 'unit') as $name) {
     require_once __DIR__."/test_case/$name.php";
   }
   
