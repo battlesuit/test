@@ -218,20 +218,20 @@ abstract class Base {
   /**
    * Trigger for a passed assertion
    * 
-   * @access protected
+   * @access public
    * @param string $message
    */
-  protected function pass_assertion($message = null) {
+  function pass_assertion($message = null) {
     $this->recorder->pass_assertion($message);
   }
   
   /**
    * Trigger for a failed assertion
    * 
-   * @access protected
+   * @access public
    * @param string $message
    */
-  protected function fail_assertion($message = null) {
+  function fail_assertion($message = null) {
     $trace = debug_backtrace();
     $last_info = $trace[2];
     
@@ -241,11 +241,11 @@ abstract class Base {
   /**
    * Evaluates a new assertion
    * 
-   * @access protected
+   * @access public
    * @param boolean $true_expectation
    * @param string $message
    */
-  protected function assert($true_expectation, $message = null) {
+  function assert($true_expectation, $message = null) {
     if((boolean)$true_expectation) {
       $this->pass_assertion();
     } else $this->fail_assertion($message);
@@ -254,238 +254,238 @@ abstract class Base {
   /**
    * Assert array key existance
    *
-   * @access protected
+   * @access public
    * @param array $stack
    * @param mixed $key
    * @param string $message
    */
-  protected function assert_key_exists($key, array $stack, $message = 'Expects array-key to exist') {
+  function assert_key_exists($key, array $stack, $message = 'Expects array-key to exist') {
     $this->assert(array_key_exists($key, $stack), $message);
   }
   
   /**
    * Assert array key existance
    *
-   * @access protected
+   * @access public
    * @param array $stack
    * @param mixed $key
    * @param string $message
    */
-  protected function assert_key_missing($key, array $stack, $message = 'Expects array-key not to exist') {
+  function assert_key_missing($key, array $stack, $message = 'Expects array-key not to exist') {
     $this->assert(!array_key_exists($key, $stack), $message);
   }
   
   /**
    * Assert existance of an array value
    *
-   * @access protected
+   * @access public
    * @param array $stack
    * @param mixed $value
    * @param string $message
    */
-  protected function assert_includes($value, array $stack, $message = 'Array does not include the given value') {
+  function assert_includes($value, array $stack, $message = 'Array does not include the given value') {
     $this->assert(in_array($value, $stack), $message);
   }
   
   /**
    * Assert strict trueness
    *
-   * @access protected
+   * @access public
    * @param mixed $value
    * @param string $message
    */  
-  protected function assert_true($value, $message = 'True expected') {
+  function assert_true($value, $message = 'True expected') {
     $this->assert($value === true, $message);
   }
   
   /**
    * Assert strict falseness
    *
-   * @access protected
+   * @access public
    * @param mixed $value
    * @param string $message
    */ 
-  protected function assert_false($value, $message = 'False expected') {
+  function assert_false($value, $message = 'False expected') {
     $this->assert($value === false, $message);
   }
   
   /**
    * Assert set-state of value
    *
-   * @access protected
+   * @access public
    * @param mixed $value
    * @param string $message
    */  
-  protected function assert_set($value, $message = 'Value has to be set') {
+  function assert_set($value, $message = 'Value has to be set') {
     $this->assert(isset($value), $message);
   }
   
   /**
    * Assert notset-state of value
    *
-   * @access protected
+   * @access public
    * @param mixed $value
    * @param string $message
    */  
-  protected function assert_not_set($value, $message = 'Value has not to be set') {
+  function assert_not_set($value, $message = 'Value has not to be set') {
     $this->assert(!isset($value), $message);
   }
   
   /**
    * Assert empty-state of value
    *
-   * @access protected
+   * @access public
    * @param mixed $value
    * @param string $message
    */  
-  protected function assert_empty($value, $message = 'Empty value expected') {
+  function assert_empty($value, $message = 'Empty value expected') {
     $this->assert(empty($value), $message);
   }
   
   /**
    * Assert empty-array
    *
-   * @access protected
+   * @access public
    * @param mixed $value
    * @param string $message
    */  
-  protected function assert_empty_array($value, $message = 'Empty array value expected') {
+  function assert_empty_array($value, $message = 'Empty array value expected') {
     $this->assert(is_array($value) and empty($value), $message);
   }
   
   /**
    * Assert empty-string
    *
-   * @access protected
+   * @access public
    * @param mixed $value
    * @param string $message
    */  
-  protected function assert_empty_string($value, $message = 'Empty string value expected') {
+  function assert_empty_string($value, $message = 'Empty string value expected') {
     $this->assert(is_string($value) and empty($value), $message);
   }
   
   /**
    * Assert notempty-state of value
    *
-   * @access protected
+   * @access public
    * @param mixed $value
    * @param string $message
    */  
-  protected function assert_present($value, $message = 'Present value expected') {
+  function assert_present($value, $message = 'Present value expected') {
     $this->assert(!empty($value), $message);
   }
   
   /**
    * Assert callable
    *
-   * @access protected
+   * @access public
    * @param mixed $value
    * @param string $message
    */
-  protected function assert_callable($value, $message = 'Callable expected') {
+  function assert_callable($value, $message = 'Callable expected') {
     $this->assert(is_callable($value), $message);
   }
   
   /**
    * Assert true array
    *
-   * @access protected
+   * @access public
    * @param mixed $value
    * @param string $message
    */
-  protected function assert_array($value, $message = 'Array expected') {
+  function assert_array($value, $message = 'Array expected') {
     $this->assert(is_array($value), $message);
   }
   
   /**
    * Assert zeroness of value
    *
-   * @access protected
+   * @access public
    * @param mixed $value
    * @param string $message
    */
-  protected function assert_zero($value, $message = 'Zero expected') {
+  function assert_zero($value, $message = 'Zero expected') {
     $this->assert($value === 0, $message);
   }
   
   /**
    * Assert true integer
    *
-   * @access protected
+   * @access public
    * @param mixed $value
    * @param string $message
    */
-  protected function assert_int($value, $message = 'Integer expected') {
+  function assert_int($value, $message = 'Integer expected') {
     $this->assert(is_int($value), $message);
   }
   
   /**
    * Assert true string
    *
-   * @access protected
+   * @access public
    * @param mixed $value
    * @param string $message
    */  
-  protected function assert_string($value, $message = 'String expected') {
+  function assert_string($value, $message = 'String expected') {
     $this->assert(is_string($value), $message);
   }
   
   /**
    * Assert true object
    *
-   * @access protected
+   * @access public
    * @param mixed $value
    * @param string $message
    */  
-  protected function assert_object($value, $message = 'Object expected') {
+  function assert_object($value, $message = 'Object expected') {
     $this->assert(is_object($value), $message);
   }
   
   /**
    * Assert instanceof 
    *
-   * @access protected
+   * @access public
    * @param mixed $value
    * @param string $of
    * @param string $message
    */
-  protected function assert_instanceof($value, $of, $message = 'Object missmatch') {
+  function assert_instanceof($value, $of, $message = 'Object missmatch') {
     $this->assert(($value instanceof $of), $message);
   }
   
   /**
    * Assert is-null 
    *
-   * @access protected
+   * @access public
    * @param mixed $value
    * @param string $message
    */
-  protected function assert_null($value, $message = 'Null expected') {
+  function assert_null($value, $message = 'Null expected') {
     $this->assert(is_null($value), $message);
   }
   
   /**
    * Assert strict equality (===)
    *
-   * @access protected
+   * @access public
    * @param mixed $value
    * @param mixed $to
    * @param string $message
    */
-  protected function assert_equality($equal, $to, $message = 'Equality expected') {
+  function assert_equality($equal, $to, $message = 'Equality expected') {
     $this->assert(($equal === $to), $message);
   }
   
   # aliases for assert_equality()
-  protected function assert_equal($equal, $to, $message = 'Equality expected') {
+  function assert_equal($equal, $to, $message = 'Equality expected') {
     return $this->assert_equality($equal, $to, $message);
   }
   
-  protected function assert_eq($equal, $to, $message = 'Equality expected') {
+  function assert_eq($equal, $to, $message = 'Equality expected') {
     return $this->assert_equality($equal, $to, $message);
   }
   
-  protected function assert_thrown_exception($object_or_class, $method, array $arguments = array(), $message = 'Exception expected') {
+  function assert_thrown_exception($object_or_class, $method, array $arguments = array(), $message = 'Exception expected') {
     try {
       call_user_func_array(array($object_or_class, $method), $arguments);
     } catch(\Exception $e) {
