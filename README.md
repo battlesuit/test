@@ -1,5 +1,4 @@
-#Suitcase.Test
+sc.test
+=======
 
-*(dev-state)*
-
-Testing bundle
+Testing Bundle for PHP 5.3+
