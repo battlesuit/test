@@ -2,7 +2,7 @@
 namespace test_case;
 
 class Unit extends Base {
-  public $bench_dir = './test/bench';
+  public $bench_dir = './bench';
   
   function load_fixtures() {
     foreach(func_get_args() as $name) { 
