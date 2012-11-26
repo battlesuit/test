@@ -233,7 +233,7 @@ abstract class Base {
    */
   function fail_assertion($message = null) {
     $trace = debug_backtrace();
-    $last_info = $trace[2];
+    $last_info = $trace[3];
     
     throw new AssertionFailure($message, 0, 0, $last_info['file'], $last_info['line']);
   }
