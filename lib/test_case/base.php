@@ -34,7 +34,10 @@ abstract class Base {
    */
   function name() {
     $class = get_class($this);
-    if(strpos($class, '\\') !== false) $class = substr(strrchr($class, '\\'), 1);
+    if(strpos($class, '\\') !== false) {
+      $class = str_replace('\\', '_', $class);
+    }
+    
     $name = str_replace('Test', '', $class);   
     
     return static::str_underscore($name);
@@ -158,7 +161,7 @@ abstract class Base {
       throw new TearDownError($e->getMessage(), $e->getCode());
     }
     
-    if(method_exists($this, 'boot')) $this->boot();
+    if(method_exists($this, 'boot_up')) $this->boot_up();
     
     foreach($test_methods as $method) {  
       $recorder->record_test();
@@ -166,7 +169,7 @@ abstract class Base {
       $recorder->complete_test();
     }
     
-    if(method_exists($this, 'shut')) $this->shut();
+    if(method_exists($this, 'shut_down')) $this->shut_down();
   }
   
   /**
@@ -233,7 +236,12 @@ abstract class Base {
    */
   function fail_assertion($message = null) {
     $trace = debug_backtrace();
-    $last_info = $trace[3];
+    
+    if(isset($trace[3]['file'])) {
+      $last_info = $trace[3];
+    } else {
+      $last_info = $trace[2];
+    }
     
     throw new AssertionFailure($message, 0, 0, $last_info['file'], $last_info['line']);
   }
@@ -493,6 +501,10 @@ abstract class Base {
     }
     
     $this->fail_assertion($message);
+  }
+  
+  function assert_function_exists($qualified_name, $message = 'Existing function expected') {
+    return $this->assert(function_exists($qualified_name), $message);
   }
 }
 ?>
